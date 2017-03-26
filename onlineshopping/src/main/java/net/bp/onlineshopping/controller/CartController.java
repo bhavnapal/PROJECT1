@@ -60,30 +60,34 @@ public class CartController {
 		Product product = productDAO.get(id);
 		User user = userDAO.getUserByUserName(principal.getName());
 		Cart cart = user.getCart();
-		cart.setGrandTotal(cart.getGrandTotal() + product.getPrice());
-		cart.setTotalItems(cart.getTotalItems() + 1);
+		
 		CartItem cartItem = cartItemDAO.getCartItemByCartIdAndProductId(cart.getId(), product.getId());
-		Set<CartItem> cartItems = new HashSet<CartItem>();
+		Set<CartItem> cartItems = null;
 		if (cartItem == null) {
 			cartItem = new CartItem();
 			cartItem.setCart(cart);
 			cartItem.setProduct(product);
 			cartItem.setQuantity(1);
 			cartItem.setTotalPrice(product.getPrice());
-			
+			cart.setGrandTotal(cart.getGrandTotal() + product.getPrice());
+			cart.setTotalItems(cart.getTotalItems() + 1);
+			cartItems = new HashSet<CartItem>();
+			cartItems.add(cartItem);
+			cart.setCartItem(cartItems);
+			cartDAO.update(cart);
 			
 		} else {
 			System.out.println("entering into else");
 			cartItem.setQuantity(cartItem.getQuantity() + 1);
 			cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice());
+			cartItem.getCart().setGrandTotal(cart.getGrandTotal() + product.getPrice());
+			cartItem.getCart().setTotalItems(cart.getTotalItems() + 1);
+			cartItemDAO.update(cartItem);
+		}
 		
 
-		}
-		cartItems.add(cartItem);
-		cart.setCartItem(cartItems);
-
-		cartDAO.update(cart);
-		//cartItemDAO.update(cartItem);
+		
+	
 
 		return "redirect:/cart/user/viewcart";
 

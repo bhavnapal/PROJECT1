@@ -11,8 +11,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.bp</groupId>
-			<artifactId>onlineshoppingBackend</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+	<artifactId>onlineshoppingBackend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
